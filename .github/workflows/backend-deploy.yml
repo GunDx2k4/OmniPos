@@ -1,0 +1,43 @@
+name: Deploy ASP.NET API
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Publish API
+      run: dotnet publish ./src/OmniPos/OmniPos.Server/OmniPos.Server/OmniPos.Server.csproj -c Release -o ./publish
+
+    - name: Update Config
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: './publish/appsettings.json'
+      env:
+        ConnectionStrings.SqlServerConnection: ${{ secrets.PROD_CONNECTION_STRING }}
+        Cors.AllowedOrigins.0: ${{ vars.DOMAIN_FE }}
+
+    - name: Deploy to IIS
+      shell: powershell
+      run: |
+        $deployPath = "${{ vars.API_PUBLISH_PATH }}"
+
+        if (!(Test-Path -Path $deployPath)) { New-Item -ItemType Directory -Path $deployPath }
+
+        iisreset /stop
+        
+        Copy-Item -Path .\publish\* -Destination $deployPath -Recurse -Force
+
+        iisreset /start

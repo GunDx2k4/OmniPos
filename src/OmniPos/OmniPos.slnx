@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Server/">
+    <Project Path="OmniPos.Server/OmniPos.Application/OmniPos.Application.csproj" />
+    <Project Path="OmniPos.Server/OmniPos.Domain/OmniPos.Domain.csproj" />
+    <Project Path="OmniPos.Server/OmniPos.Infrastructure/OmniPos.Infrastructure.csproj" />
+    <Project Path="OmniPos.Server/OmniPos.Server/OmniPos.Server.csproj" />
+  </Folder>
+  <Project Path="omnipos.client/omnipos.client.esproj">
+    <BuildDependency Project="OmniPos.Server/OmniPos.Server/OmniPos.Server.csproj" />
+    <Build />
+    <Deploy />
+  </Project>
+</Solution>
