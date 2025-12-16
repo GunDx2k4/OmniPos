@@ -23,7 +23,13 @@ public class CreateProductCommandHandler(IProductRepository productRepository) :
             throw new ApplicationException($"A product with the name '{command.Name}' already exists.");
         }
 
-        var product = new Product(command.Name, command.Price, command.StockQuantity, command.Description);
+        var product = new Product
+        {
+            Name = command.Name,
+            Description = command.Description,
+            StockQuantity = command.StockQuantity,
+            Price = command.Price
+        };
 
         await _productRepository.AddAsync(product);
         await _productRepository.UnitOfWork.SaveChangesAsync(cancellationToken);

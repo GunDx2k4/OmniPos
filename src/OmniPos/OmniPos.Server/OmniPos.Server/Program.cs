@@ -16,7 +16,7 @@ var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowMyFrontend", policy =>
+    options.AddPolicy("AllowFrontend", policy =>
     {
         if (allowedOrigins != null && allowedOrigins.Length > 0)
         {
@@ -36,15 +36,9 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
 
-app.UseCors("AllowMyFrontend");
-
-app.UseSwagger();
-app.UseSwaggerUI();
+app.UseCors("AllowFrontend");
 
 app.UseHttpsRedirection();
 
