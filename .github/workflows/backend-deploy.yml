@@ -2,7 +2,7 @@ name: Deploy ASP.NET API
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "backend" ]
 
 jobs:
   build-and-deploy:

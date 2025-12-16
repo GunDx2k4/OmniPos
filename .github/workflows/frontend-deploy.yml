@@ -2,7 +2,7 @@ name: Deploy VueJS to GitHub Pages
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "frontend" ]
 
 permissions:
   contents: read
