@@ -42,7 +42,7 @@
 | Phân lớp | Công nghệ | Chi tiết |
 | :--- | :--- | :--- |
 | **Backend** | .NET 9 | ASP.NET Core Web API, Entity Framework Core. |
-| **Frontend** | Vue.js 3 | Composition API, Vite, Tailwind CSS. |
+| **Frontend** | Vue.js 3 | Composition API, Vite, Tailwind CSS **(Vibe Coding 🙃)**. |
 | **Database** | SQL Server | Sử dụng Transaction để đảm bảo tính toàn vẹn dữ liệu. |
 
 ---
