@@ -16,11 +16,9 @@
 | ID | User Story | Độ ưu tiên | Epic |
 | :--- | :--- | :--- | :--- |
 | **US-1.1** | **Là** Thu ngân (Mặc định), **tôi muốn** xem danh sách món ăn (có Tên, Giá, Ảnh), **để** chọn món cho khách. | **Critical** | POS |
-| **US-1.2** | **Là** Thu ngân, **tôi muốn** thêm món vào giỏ hàng và tăng/giảm số lượng, **để** chốt đơn order. | **Critical** | POS |
-| **US-1.3** | **Là** Thu ngân, **tôi muốn** nhìn thấy Tổng tiền tạm tính thay đổi ngay lập tức, **để** báo giá cho khách. | High | POS |
-| **US-1.4** | **Là** Thu ngân, **tôi muốn** bấm nút "Thanh toán", **để** lưu đơn hàng vào Database và reset màn hình bán mới. | **Critical** | POS |
-| **US-1.5** | **Là** Chủ quán, **tôi muốn** xem danh sách lịch sử các đơn đã bán trong ngày, **để** biết hôm nay bán được bao nhiêu. | **Critical** | Report |
-| **US-1.6** | **Là** Thu ngân, **tôi muốn** in Hóa đơn thanh toán ra máy in nhiệt (khổ 80mm), **để** đưa cho khách. | Medium | Hardware |
+| **US-1.2** | **Là** Thu ngân, **tôi muốn** quản lý giỏ hàng (thêm món, chỉnh số lượng, xóa) và thấy tổng tiền được tính tự động, **để** tôi có thể chuẩn bị đơn hàng trước khi thanh toán. | **Critical** | POS |
+| **US-1.3** | **Là** Thu ngân, **tôi muốn** bấm nút "Thanh toán", **để** lưu đơn hàng vào Database và reset màn hình bán mới. | **Critical** | POS |
+| **US-1.4** | **Là** Chủ quán, **tôi muốn** xem danh sách lịch sử các đơn đã bán trong ngày, **để** biết hôm nay bán được bao nhiêu. | **Critical** | Report |
 
 ---
 
