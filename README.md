@@ -42,7 +42,7 @@ I implemented **Clean Architecture (Layered)** to ensure scalability and maintai
 | Layer | Technology | Details |
 | :--- | :--- | :--- |
 | **Backend** | .NET 9 | ASP.NET Core Web API, Entity Framework Core. |
-| **Frontend** | Vue.js 3 | Composition API, Vite, Tailwind CSS. |
+| **Frontend** | Vue.js 3 | Composition API, Vite, Tailwind CSS (**Vibe Coding 🙃**). |
 | **Database** | SQL Server | ACID Transactions used to ensure data integrity. |
 
 ---
