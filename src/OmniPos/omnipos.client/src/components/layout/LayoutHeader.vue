@@ -44,7 +44,7 @@ const menuItems = [
       <div class="flex items-center gap-2 cursor-pointer select-none">
         <img :src="logoUrl" alt="OmniPos Logo" class="w-8 h-8 object-contain" />
         <span class="font-bold text-xl text-primary tracking-tight hidden md:block">
-          Omni<span class="text-white">Pos</span>
+          Omni<span class="text-text">Pos</span>
         </span>
       </div>
 
