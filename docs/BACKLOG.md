@@ -17,10 +17,9 @@
 | ID | User Story | Priority | Epic |
 | :--- | :--- | :--- | :--- |
 | **US-1.1** | **As a** Cashier (Default), **I want to** view the menu list (with Name, Price, Image), **so that** I can select items for customers. | **Critical** | POS |
-| **US-1.2** | **As a** Cashier, **I want to** add items to the cart and adjust quantities, **so that** I can finalize the order. | **Critical** | POS |
-| **US-1.3** | **As a** Cashier, **I want to** see the Subtotal update instantly, **so that** I can quote the price to the customer. | High | POS |
-| **US-1.4** | **As a** Cashier, **I want to** click the "Checkout" button, **so that** I can save the order to the Database and reset the screen for a new sale. | **Critical** | POS |
-| **US-1.5** | **As a** Store Owner, **I want to** view the history list of orders sold today, **so that** I know the daily sales volume. | **Critical** | Report |
+| **US-1.2** | **As a** Cashier, **I want to** o manage the shopping cart (add, adjust quantity, remove) and see the total price calculated automatically, **so that** I can prepare the order for payment. | **Critical** | POS |
+| **US-1.3** | **As a** Cashier, **I want to** click the "Checkout" button, **so that** I can save the order to the Database and reset the screen for a new sale. | **Critical** | POS |
+| **US-1.4** | **As a** Store Owner, **I want to** view the history list of orders sold today, **so that** I know the daily sales volume. | **Critical** | Report |
 
 ---
 
