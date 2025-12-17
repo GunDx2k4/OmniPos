@@ -8,6 +8,7 @@ const {
   orderState,
   increaseQty,
   decreaseQty,
+  updateQty,
   removeItem,
   totalAmount
 } = useOrder();
@@ -32,6 +33,7 @@ const {
       <div v-if="orderState.items.length > 0">
         <OrderItem v-for="item in orderState.items" :key="item.productId" :item="item"
           @increase="increaseQty(item.productId)" @decrease="decreaseQty(item.productId)"
+          @update="(newQty: number) => updateQty(item.productId, newQty)"
           @remove="removeItem(item.productId)" />
       </div>
 

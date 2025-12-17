@@ -3,4 +3,5 @@ export interface OrderItem {
     productName: string
     price: number
     quantity: number
+    stockQuantity: number
 }
