@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { Product } from '@/types/Product'
-import ProductCard from '@/components/sections/ProductCard.vue'
+import ProductCard from '@/components/menu/ProductCard.vue'
 
 defineProps<{
   products: Product[]
   isLoading?: boolean
 }>()
+
 </script>
 
 <template>
