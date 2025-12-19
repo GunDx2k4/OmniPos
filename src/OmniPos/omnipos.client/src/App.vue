@@ -4,13 +4,15 @@
 </script>
 
 <template>
-  <div id="app">
-    <div class="fixed top-0 left-0 right-0 z-50">
+  <div id="app" class="h-screen flex flex-col bg-background text-text overflow-hidden font-sans">
+    
+    <div class="shrink-0 z-50">
       <LayoutHeader />
     </div>
 
-    <main class="pt-16 min-h-screen">
+    <main class="flex-1 relative overflow-hidden">
       <RouterView />
     </main>
+
   </div>
 </template>
