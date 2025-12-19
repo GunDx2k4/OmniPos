@@ -1,8 +1,15 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useOrder } from '@/composables/useOrder'
 import { formatCurrency } from '@/utils/formatters'
 import OrderItem from './OrderItem.vue'
 import { ShoppingBagIcon, CreditCardIcon } from '@heroicons/vue/24/outline'
+
+const selectedPaymentMethod = ref(0)
+
+const emit = defineEmits<{
+  (e: 'checkout-success'): void
+}>()
 
 const {
   orderState,
@@ -10,9 +17,23 @@ const {
   decreaseQty,
   updateQty,
   removeItem,
-  totalAmount
-} = useOrder();
+  totalAmount,
+  checkOut,
+  isSubmitting,
+  error
+} = useOrder()
 
+const handlePayment = async () => {
+  try {
+    const orderId = await checkOut(selectedPaymentMethod.value)
+    alert(`Thành công! Mã đơn: ${orderId}`)
+    emit('checkout-success')
+  } catch (e: any) {
+    console.error('Lỗi khi thanh toán:', e)
+    alert(`Lỗi khi thanh toán: ${e.message || 'Không xác định'}`)
+
+  }
+}
 </script>
 
 <template>
@@ -33,8 +54,7 @@ const {
       <div v-if="orderState.items.length > 0">
         <OrderItem v-for="item in orderState.items" :key="item.productId" :item="item"
           @increase="increaseQty(item.productId)" @decrease="decreaseQty(item.productId)"
-          @update="(newQty: number) => updateQty(item.productId, newQty)"
-          @remove="removeItem(item.productId)" />
+          @update="(newQty: number) => updateQty(item.productId, newQty)" @remove="removeItem(item.productId)" />
       </div>
 
       <div v-else class="h-full flex flex-col items-center justify-center text-text-muted p-8">
@@ -53,12 +73,16 @@ const {
         </span>
       </div>
 
-      <button
+      <button @click="handlePayment"
         class="w-full py-3 px-4 bg-primary hover:bg-primary-hover disabled:bg-border disabled:cursor-not-allowed text-white font-bold rounded-xl transition shadow-lg flex justify-center items-center gap-2"
-        :disabled="orderState.items.length === 0">
+        :disabled="isSubmitting || orderState.items.length === 0">
         <CreditCardIcon class="w-5 h-5" />
-        Thanh toán
+        <span v-if="isSubmitting">Đang xử lý...</span>
+        <span v-else>Thanh toán</span>
       </button>
+      <p v-if="useOrder().error.value" class="text-red-500 mt-2">
+        {{ useOrder().error.value }}
+      </p>
     </div>
 
   </div>

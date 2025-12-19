@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { OrderItem } from '@/types/OrderItem'
+import type { OrderItem } from '@/types/Order'
 import { formatCurrency } from '@/utils/formatters'
 import { TrashIcon } from '@heroicons/vue/24/outline'
 
