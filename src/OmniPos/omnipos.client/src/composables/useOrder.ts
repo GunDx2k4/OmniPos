@@ -2,6 +2,8 @@ import { reactive, computed, watch, ref } from 'vue'
 import type { OrderItem } from '@/types/Order'
 import type { Product } from '@/types/Product'
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL || ''
+
 const orderState = reactive({
   items: [] as OrderItem[]
 })
@@ -114,7 +116,7 @@ export function useOrder() {
         }))
       }
 
-      const response = await fetch('/api/v1/orders', {
+      const response = await fetch(`${baseUrl}/api/v1/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

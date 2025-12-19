@@ -1,6 +1,8 @@
 import { ref } from 'vue'
 import type { Product } from '@/types/Product'
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL || ''
+
 export function useProduct() {
   const products = ref<Product[]>([])
   const isLoading = ref(false)
@@ -11,9 +13,7 @@ export function useProduct() {
     error.value = null
     
     try {
-      const url = `/api/v1/products`
-
-      const response = await fetch(url)
+      const response = await fetch(`${baseUrl}/api/v1/products`)
 
       if (!response.ok) {
         throw new Error('Không thể tải danh sách món ăn.')
