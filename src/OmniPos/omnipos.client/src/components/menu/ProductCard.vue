@@ -2,15 +2,21 @@
 import type { Product } from '@/types/Product'
 import { formatCurrency } from '@/utils/formatters'
 import { useOrder } from '@/composables/useOrder'
+import { useToast } from '@/composables/useToast'
 
 const props = defineProps<{
     product: Product
 }>()
 
+const toast = useToast()
+
 const { addToOrder } = useOrder()
 
 const handleAddToCart = () => {
-    if (props.product.stockQuantity === 0) return
+    if (props.product.stockQuantity === 0) {
+        toast.error('Sản phẩm đã hết hàng.')
+        return
+    }
 
     addToOrder(props.product)
 }
@@ -26,7 +32,7 @@ const handleImageError = (e: Event) => {
     <div @click="handleAddToCart"
         class="group relative bg-surface rounded-2xl shadow-sm border border-border overflow-hidden cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
 
-        <div class="h-40 w-full overflow-hidden bg-border/30 relative">
+        <div class="h-40 w-full overflow-hidden bg-surface-secondary relative">
             <img :src="product.imageUrl || 'https://via.placeholder.com/300x200?text=OmniPos'" :alt="product.name"
                 @error="handleImageError"
                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
@@ -34,7 +40,7 @@ const handleImageError = (e: Event) => {
             <div
                 class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                 <span
-                    class="bg-surface text-primary rounded-full p-2 shadow-lg transform scale-0 group-hover:scale-100 transition-transform">
+                    class="bg-primary text-primary-foreground rounded-full p-2 shadow-lg transform scale-0 group-hover:scale-100 transition-transform">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
                         stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -53,18 +59,18 @@ const handleImageError = (e: Event) => {
             </p>
 
             <div class="flex items-center justify-between">
-                <span class="font-bold text-accent text-lg">
+                <span class="font-bold text-primary text-lg">
                     {{ formatCurrency(product.price) }}
                 </span>
 
 
                 <span v-if="product.stockQuantity === 0"
-                    class="text-xs font-bold text-danger bg-danger/10 px-2 py-1 rounded border border-danger/30">
+                    class="text-xs font-bold text-danger-foreground bg-danger px-2 py-1 rounded border border-danger/30">
                     Hết hàng
                 </span>
 
                 <span v-if="product.stockQuantity > 0"
-                    class="text-xs font-bold text-success bg-success/10 px-2 py-1 rounded border border-success/30">
+                    class="text-xs font-bold text-success-foreground bg-success px-2 py-1 rounded border border-success/30">
                     còn lại {{ product.stockQuantity }}
                 </span>
             </div>
