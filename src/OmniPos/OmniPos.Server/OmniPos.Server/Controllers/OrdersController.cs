@@ -9,7 +9,7 @@ namespace OmniPos.Server.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class OrderController(Dispatcher dispatcher) : ControllerBase
+    public class OrdersController(Dispatcher dispatcher) : ControllerBase
     {
 
         [HttpGet("{id}")]
