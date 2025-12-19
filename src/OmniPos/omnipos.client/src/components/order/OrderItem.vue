@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { OrderItem } from '@/types/OrderItem'
+import type { OrderItem } from '@/types/Order'
 import { formatCurrency } from '@/utils/formatters'
 import { TrashIcon } from '@heroicons/vue/24/outline'
 
@@ -36,7 +36,7 @@ const onFocus = (event: Event) => {
 
 <template>
   <div
-    class="flex items-start justify-between p-4 border-b border-dashed border-border hover:bg-primary/5 transition-colors group">
+    class="flex items-start justify-between p-4 border-b border-dashed border-border hover:bg-primary-light/10 transition-colors group">
 
     <div class="flex-1 min-w-0 pr-3">
       <h4 class="text-sm font-semibold text-text leading-snug">
@@ -46,7 +46,7 @@ const onFocus = (event: Event) => {
         <span class="text-xs text-text-muted">{{ formatCurrency(item.price) }}</span>
 
         <span v-if="item.quantity >= item.stockQuantity"
-          class="text-[10px] font-bold text-danger bg-danger/10 px-1.5 rounded">
+          class="text-[10px] font-bold text-danger-foreground bg-danger px-1.5 rounded">
           Tối đa: {{ item.stockQuantity }}
         </span>
       </div>
@@ -61,10 +61,10 @@ const onFocus = (event: Event) => {
       <div class="flex items-center gap-3">
 
         <div
-          class="flex items-center justify-center rounded-full h-8 border border-primary/20 bg-primary/5 text-text shadow-inner">
+          class="flex items-center justify-center rounded-full h-8 border border-primary/20 bg-primary-lighter text-text shadow-inner">
 
           <button @click.stop="$emit('decrease')"
-            class="h-8 w-8 rounded-l-full px-2 text-lg font-semibold text-primary transition-colors hover:bg-primary/10">
+            class="h-8 w-8 rounded-l-full px-2 text-lg font-semibold text-primary transition-colors hover:bg-primary/20">
             -
           </button>
 
@@ -73,13 +73,13 @@ const onFocus = (event: Event) => {
             min="1" :max="item.stockQuantity" />
 
           <button @click.stop="$emit('increase')"
-            class="h-8 w-8 rounded-r-full px-2 text-lg font-semibold text-primary transition-colors hover:bg-primary/10">
+            class="h-8 w-8 rounded-r-full px-2 text-lg font-semibold text-primary transition-colors hover:bg-primary/20">
             +
           </button>
         </div>
 
         <button @click.stop="$emit('remove')"
-          class="text-text-muted hover:text-danger transition-colors p-1.5 rounded-md hover:bg-danger/10"
+          class="text-text-muted hover:text-danger-foreground transition-colors p-1.5 rounded-md hover:bg-danger/20"
           title="Xóa món">
           <TrashIcon class="w-4 h-4" />
         </button>

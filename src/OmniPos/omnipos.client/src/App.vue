@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { RouterView } from 'vue-router'
   import LayoutHeader from '@/components/layout/LayoutHeader.vue'
+  import ToastContainer from '@/components/ui/ToastContainer.vue'
 </script>
 
 <template>
@@ -11,6 +12,7 @@
     </div>
 
     <main class="flex-1 relative overflow-hidden">
+      <ToastContainer />
       <RouterView />
     </main>
 
