@@ -51,7 +51,7 @@ I implemented **Clean Architecture (Layered)** to ensure scalability and maintai
 
 This project is managed via **Agile/Kanban** on GitHub Projects.
 
-👉 **[VIEW PROJECT BOARD HERE]()**
+👉 **[VIEW PROJECT BOARD HERE](https://github.com/users/GunDx2k4/projects/4)**
 
 - [ ] **Sprint 1: The Basic POS** [Details](/docs/BACKLOG.md#sprint-1-the-basic-pos)
     - **Goal:** Replace manual logbooks with a digital ordering system.
