@@ -12,10 +12,9 @@ public record GetProductQuery : IQuery<ProductDTO>
 
 public class GetProductQueryHandler(IProductRepository productRepository) : IQueryHandler<GetProductQuery, ProductDTO>
 {
-    private readonly IProductRepository _productRepository = productRepository;
     public async Task<ProductDTO> HandleAsync(GetProductQuery query, CancellationToken cancellationToken)
     {
-        var queryable = _productRepository.GetQueryableSet()
+        var queryable = productRepository.GetQueryableSet()
             .Where(p => p.Id == query.ProductId)
             .Select(p => new ProductDTO
             {
@@ -26,10 +25,10 @@ public class GetProductQueryHandler(IProductRepository productRepository) : IQue
                 StockQuantity = p.StockQuantity
             });
 
-        var productDto = await _productRepository.FirstOrDefaultAsync(queryable);
+        var productDto = await productRepository.FirstOrDefaultAsync(queryable);
 
         ApplicationExeption.ThrowIfEntityNotFound(productDto);
 
-        return productDto;
+        return productDto!;
     }
 }

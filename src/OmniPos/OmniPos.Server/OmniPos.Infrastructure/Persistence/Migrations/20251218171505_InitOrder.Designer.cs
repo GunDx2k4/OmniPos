@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OmniPos.Infrastructure.Persistence.Common;
 
@@ -11,9 +12,11 @@ using OmniPos.Infrastructure.Persistence.Common;
 namespace OmniPos.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(OmniPosDbContext))]
-    partial class OmniPosDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251218171505_InitOrder")]
+    partial class InitOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

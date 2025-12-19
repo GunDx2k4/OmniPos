@@ -1,13 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
+using OmniPos.Application.Common;
+using OmniPos.Domain.Common.Entities;
 using OmniPos.Domain.Common.Repositories;
 using System.Data;
 using System.Reflection;
 
 namespace OmniPos.Infrastructure.Persistence.Common
 {
-    public class OmniPosDbContext(ILogger<OmniPosDbContext> logger, DbContextOptions options) : DbContext(options), IUnitOfWork
+    public class OmniPosDbContext(ILogger<OmniPosDbContext> logger, DbContextOptions options, Dispatcher dispatcher) : DbContext(options), IUnitOfWork
     {
         private readonly ILogger<OmniPosDbContext> _logger = logger;
 
@@ -38,6 +40,22 @@ namespace OmniPos.Infrastructure.Persistence.Common
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
+            var entitiesWithEvents = ChangeTracker.Entries<Entity>()
+            .Where(e => e.Entity.DomainEvents.Any())
+            .Select(e => e.Entity)
+            .ToList();
+
+            var domainEvents = entitiesWithEvents
+            .SelectMany(e => e.DomainEvents)
+            .ToList();
+
+            entitiesWithEvents.ForEach(e => e.ClearDomainEvents());
+
+            foreach (var domainEvent in domainEvents)
+            {
+                await dispatcher.DispatchAsync(domainEvent, cancellationToken);
+            }
+
             return await base.SaveChangesAsync(cancellationToken);
         }
     }

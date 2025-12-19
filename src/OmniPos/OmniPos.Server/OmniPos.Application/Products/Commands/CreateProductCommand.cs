@@ -14,11 +14,9 @@ public record CreateProductCommand : ICommand
 
 public class CreateProductCommandHandler(IProductRepository productRepository) : ICommandHandler<CreateProductCommand>
 {
-    private readonly IProductRepository _productRepository = productRepository;
-
     public async Task HandleAsync(CreateProductCommand command, CancellationToken cancellationToken)
     {
-        if (await _productRepository.ProductNameUniqueAsync(command.Name) is not null)
+        if (await productRepository.ProductNameUniqueAsync(command.Name) is not null)
         {
             throw new ApplicationException($"A product with the name '{command.Name}' already exists.");
         }
@@ -31,7 +29,7 @@ public class CreateProductCommandHandler(IProductRepository productRepository) :
             Price = command.Price
         };
 
-        await _productRepository.AddAsync(product);
-        await _productRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+        await productRepository.AddAsync(product);
+        await productRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

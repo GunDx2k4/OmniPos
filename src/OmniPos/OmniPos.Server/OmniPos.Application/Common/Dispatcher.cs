@@ -14,29 +14,31 @@ public class Dispatcher(IServiceProvider serviceProvider)
 
     public static void RegisterEventHandlers(Assembly assembly, IServiceCollection services)
     {
-        var handlerTypes = assembly.GetTypes().Where(t => t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IDomainEventHandler<>))).ToList();
+        var handlerTypes = assembly.GetTypes().Where(t => t.GetInterfaces().Any(i => i.IsGenericType && (i.GetGenericTypeDefinition() == typeof(IDomainEventHandler<>)))).ToList();
 
         foreach (var handlerType in handlerTypes)
         {
-            _eventHandlers.Add(handlerType);
+            services.AddTransient(handlerType);
         }
 
         _eventHandlers.AddRange(handlerTypes);
     }
 
-    public async Task DispatchAsync<TEvent>(TEvent domainEvent, CancellationToken cancellationToken = default) where TEvent : IDomainEvent
+    public async Task DispatchAsync(IDomainEvent domainEvent, CancellationToken cancellationToken = default)
     {
-        var handlerInterfaceType = typeof(IDomainEventHandler<>).MakeGenericType(domainEvent.GetType());
-        var handlers = _eventHandlers
-            .Where(t => handlerInterfaceType.IsAssignableFrom(t))
-            .Select(t => _serviceProvider.GetService(t))
-            .Where(h => h != null)
-            .ToList();
-        foreach (var handler in handlers)
+        foreach (Type handlerType in _eventHandlers)
         {
-            if (handler is IDomainEventHandler<TEvent> typedHandler)
+            bool canHandleEvent = handlerType.GetInterfaces()
+                .Any(x => x.IsGenericType
+                    && x.GetGenericTypeDefinition() == typeof(IDomainEventHandler<>)
+                    && x.GenericTypeArguments[0] == domainEvent.GetType());
+
+            if (canHandleEvent)
             {
-                await typedHandler.HandleAsync(domainEvent, cancellationToken);
+                dynamic handler = _serviceProvider.GetService(handlerType)!;
+                if (handler == null)
+                    throw new Exception($"Domain Event Handler for {domainEvent.GetType().Name} not found!");
+                await handler.HandleAsync((dynamic)domainEvent, cancellationToken);
             }
         }
     }
@@ -47,8 +49,22 @@ public class Dispatcher(IServiceProvider serviceProvider)
         Type[] typeArgs = { command.GetType() };
         Type handlerType = type.MakeGenericType(typeArgs);
 
-        dynamic handler = _serviceProvider.GetService(handlerType);
+        dynamic handler = _serviceProvider.GetService(handlerType)!;
+        if (handler == null)
+            throw new Exception($"Command Handler for {command.GetType().Name} not found!");
         await handler.HandleAsync((dynamic)command, cancellationToken);
+    }
+
+    public async Task<T> DispatchAsync<T>(ICommand<T> command, CancellationToken cancellationToken = default)
+    {
+        Type type = typeof(ICommandHandler<,>);
+        Type[] typeArgs = { command.GetType(), typeof(T) };
+        Type handlerType = type.MakeGenericType(typeArgs);
+        dynamic handler = _serviceProvider.GetService(handlerType)!;
+        if (handler == null)
+            throw new Exception($"Command Handler for {command.GetType().Name} not found!");
+        Task<T> result = handler.HandleAsync((dynamic)command, cancellationToken);
+        return await result;
     }
 
     public async Task<T> DispatchAsync<T>(IQuery<T> query, CancellationToken cancellationToken = default)
@@ -57,7 +73,9 @@ public class Dispatcher(IServiceProvider serviceProvider)
         Type[] typeArgs = { query.GetType(), typeof(T) };
         Type handlerType = type.MakeGenericType(typeArgs);
 
-        dynamic handler = _serviceProvider.GetService(handlerType);
+        dynamic handler = _serviceProvider.GetService(handlerType)!;
+        if (handler == null)
+            throw new Exception($"Query Handler for {query.GetType().Name} not found!");
         Task<T> result = handler.HandleAsync((dynamic)query, cancellationToken);
         return await result;
     }

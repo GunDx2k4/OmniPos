@@ -1,6 +1,7 @@
 ﻿using OmniPos.Domain.Common;
 using OmniPos.Domain.Common.Entities;
 using OmniPos.Domain.Events.Product;
+using OmniPos.Domain.Exceptions;
 
 namespace OmniPos.Domain.Entities;
 
@@ -92,7 +93,7 @@ public class Product : AuditableEntity, IArchivable
 
         if (quantity > StockQuantity)
         {
-            throw new DomainException("Insufficient stock to decrease by the specified quantity.");
+            throw new OutOfStockException(Id, Name, StockQuantity, quantity);
         }
         StockQuantity -= quantity;
 
