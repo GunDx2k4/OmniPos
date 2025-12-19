@@ -28,6 +28,7 @@ public abstract class Repository<TEntity>(OmniPosDbContext dbContext) : IReposit
         }
 
         await DbSet.AddAsync(entity, cancellationToken ?? CancellationToken.None);
+
     }
 
     public Task AddOrUpdateAsync(TEntity entity, CancellationToken? cancellationToken = null)
@@ -48,8 +49,7 @@ public abstract class Repository<TEntity>(OmniPosDbContext dbContext) : IReposit
         {
             e.LastModifiedAt = DateTimeOffset.UtcNow;
         }
-
-        await UpdateAsync(entity, cancellationToken);
+        DbSet.Update(entity);
     }
 
     public async Task DeleteAsync(TEntity entity, CancellationToken? cancellationToken = null)

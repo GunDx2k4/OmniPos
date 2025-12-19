@@ -10,4 +10,9 @@ public class ProductRepository(OmniPosDbContext dbContext) : Repository<Product>
     {
         return await FirstOrDefaultAsync(GetQueryableSet().Where(p => p.Name == name && (excludingProductId == null || p.Id != excludingProductId)));
     }
+
+    public async Task<bool> ExistProductAsync(int productId)
+    {
+        return await FirstOrDefaultAsync(GetQueryableSet().Where(p => p.Id == productId)) is not null;
+    }
 }

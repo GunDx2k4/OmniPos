@@ -10,10 +10,9 @@ namespace OmniPos.Application.Products.Queries
 
     public class GetProductsQueryHandler(IProductRepository productRepository) : IQueryHandler<GetProductsQuery, IEnumerable<ProductDTO>>
     {
-        private readonly IProductRepository _productRepository = productRepository;
         public async Task<IEnumerable<ProductDTO>> HandleAsync(GetProductsQuery query, CancellationToken cancellationToken)
         {
-            var queryable = _productRepository.GetQueryableSet()
+            var queryable = productRepository.GetQueryableSet()
                 .Select(p => new ProductDTO
                 {
                     Id = p.Id,
@@ -23,7 +22,7 @@ namespace OmniPos.Application.Products.Queries
                     StockQuantity = p.StockQuantity
                 });
 
-            var productDTOs = await _productRepository.ToListAsync(queryable);
+            var productDTOs = await productRepository.ToListAsync(queryable);
 
             return productDTOs;
         }
