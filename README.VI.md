@@ -51,7 +51,7 @@
 
 Dự án được quản lý theo quy trình **Agile/Kanban** trên GitHub Projects.
 
-👉 **[XEM BẢNG TIẾN ĐỘ DỰ ÁN TẠI ĐÂY]()**
+👉 **[XEM BẢNG TIẾN ĐỘ DỰ ÁN TẠI ĐÂY](https://github.com/users/GunDx2k4/projects/4)**
 
 - [ ] **Sprint 1: Máy POS cơ bản** [Chi tiết](/docs/BACKLOG.VI.md#sprint-1-sprint-1-máy-pos-cơ-bản)
     - **Mục tiêu:** Thay thế sổ ghi chép thủ công bằng hệ thống order kỹ thuật số.
