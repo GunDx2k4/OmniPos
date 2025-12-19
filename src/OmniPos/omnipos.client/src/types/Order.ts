@@ -4,4 +4,10 @@ export interface OrderItem {
     price: number
     quantity: number
     stockQuantity: number
+    note?: string
+}
+
+export interface Order {
+    paymentMethod: number
+    items: OrderItem[]
 }

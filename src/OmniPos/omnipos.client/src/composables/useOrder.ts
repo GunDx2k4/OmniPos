@@ -1,6 +1,8 @@
-import { reactive, computed, watch } from 'vue'
-import type { OrderItem } from '@/types/OrderItem'
+import { reactive, computed, watch, ref } from 'vue'
+import type { OrderItem } from '@/types/Order'
 import type { Product } from '@/types/Product'
+
+const baseUrl = import.meta.env.VITE_API_BASE_URL || ''
 
 const orderState = reactive({
   items: [] as OrderItem[]
@@ -19,12 +21,19 @@ if (savedOrder) {
 
 watch(
   () => orderState.items,
-  (newVal) => localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newVal)),
+  (newVal) => {
+    if (newVal.length === 0) {
+      localStorage.removeItem(LOCAL_STORAGE_KEY)
+    } else {
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newVal))
+    }
+  },
   { deep: true }
 )
 
 export function useOrder() {
-
+  const isSubmitting = ref(false)
+  const error = ref<string | null>(null)
   const addToOrder = (product: Product) => {
     const existingItem = orderState.items.find((item) => item.productId === product.id)
     if (existingItem) {
@@ -61,7 +70,7 @@ export function useOrder() {
     const item = orderState.items.find((i) => i.productId === productId);
 
     if (item) {
-      
+
       if (newQty === 0) {
         removeItem(productId);
         return;
@@ -90,6 +99,50 @@ export function useOrder() {
     return orderState.items.reduce((total, item) => total + item.quantity, 0)
   })
 
+  const clearCart = () => {
+    orderState.items = []
+  }
+  const checkOut = async (paymentMethod: number) => {
+    if (orderState.items.length === 0) return
+    isSubmitting.value = true
+    error.value = null
+
+    try {
+      const payload = {
+        paymentMethod: paymentMethod,
+        items: orderState.items.map(item => ({
+          productId: item.productId,
+          quantity: item.quantity
+        }))
+      }
+
+      const response = await fetch(`${baseUrl}/api/v1/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        const customError: any = new Error(responseData.message || 'Lỗi API')
+        customError.backendData = responseData
+        throw customError
+      }
+
+      clearCart()
+      return responseData.id || responseData.orderId;
+
+    } catch (err: any) {
+        console.error(err)
+        error.value = `Không thể kết nối đến máy chủ. ${err.message}`
+    } finally {
+      isSubmitting.value = false
+    }
+  }
+
   return {
     orderState,
     addToOrder,
@@ -97,6 +150,9 @@ export function useOrder() {
     decreaseQty,
     updateQty,
     removeItem,
+    checkOut,
+    isSubmitting,
+    error,
     totalAmount,
     totalItems
   }
