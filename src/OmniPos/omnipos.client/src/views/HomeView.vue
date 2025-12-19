@@ -4,14 +4,14 @@ import MenuList from '@/components/menu/MenuList.vue'
 import OrderSummary from '@/components/order/OrderSummary.vue'
 import { useProduct } from '@/composables/useProduct'
 
-const { products, isLoading, error, fetchProducts } = useProduct()
+const { products, isLoading, error, fetchProducts, updateProductStock } = useProduct()
 
 onMounted(() => {
   fetchProducts()
 })
 
 const handleCheckoutSuccess = () => {
-  fetchProducts()
+  updateProductStock()
 }
 </script>
 
